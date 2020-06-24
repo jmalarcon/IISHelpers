@@ -15,4 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WebHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)YAML\SimpleYAMLParser.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)readme.md" />
+  </ItemGroup>
 </Project>
