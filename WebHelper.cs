@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Configuration;
 
@@ -36,18 +37,30 @@ namespace IISHelpers
         internal static string GetIPAddress()
         {
             HttpContext ctx = HttpContext.Current;
-            string ip = ctx.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
-            if (!string.IsNullOrEmpty(ip))
-            {
-                string[] addresses = ip.Split(',');
-                if (addresses.Length != 0)
+            //List of headers that can contain forwarding info if the connection is through a proxy
+            string[] ForwardedHeaders = new string[] {
+                "HTTP_X_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_FORWARDED_FOR",
+                "HTTP_CLIENT-IP", "HTTP_CLIENT_IP", "HTTP_FORWARDED", "HTTP_X_FORWARDED", "HTTP_X_COMING_FROM",
+                "HTTP_X_REAL_IP", "HTTP_VIA", "HTTP_COMING_FROM", "HTTP_FROM", "HTTP_PROXY_CONNECTION",
+                "HTTP_X_CLUSTER_CLIENT_IP", "HTTP_True-Client-IP" };
+
+            //Check the headers to see if the connection comes through a proxy
+            foreach (string header in ForwardedHeaders)
+            { 
+                var headervalue = ctx.Request.ServerVariables[header];
+
+                if (!string.IsNullOrEmpty(headervalue))
                 {
-                    return addresses[0];
+                    string[] addresses = headervalue.Split(',');
+                    if (addresses.Length != 0)
+                    {
+                        return addresses[addresses.Length-1];   //If there's more than one, the last one has the originating IP
+                    }
                 }
             }
 
-            return ctx.Request.ServerVariables["REMOTE_ADDR"];
+            return ctx.Request.ServerVariables["REMOTE_ADDR"]; //Default common value
         }
 
         /// <summary>
