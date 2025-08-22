@@ -41,7 +41,7 @@ namespace IISHelpers
             //List of headers that can contain forwarding info if the connection is through a proxy
             string[] ForwardedHeaders = new string[] {
                 "HTTP_X_FORWARDED_FOR", "HTTP_FORWARDED", "HTTP_FORWARDED_FOR",
-                "HTTP_CLIENT-IP", "HTTP_CLIENT_IP", "HTTP_FORWARDED", "HTTP_X_FORWARDED", "HTTP_X_COMING_FROM",
+                "HTTP_CLIENT-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED", "HTTP_X_COMING_FROM",
                 "HTTP_X_REAL_IP", "HTTP_VIA", "HTTP_COMING_FROM", "HTTP_FROM", "HTTP_PROXY_CONNECTION",
                 "HTTP_X_CLUSTER_CLIENT_IP", "HTTP_True-Client-IP" };
 
